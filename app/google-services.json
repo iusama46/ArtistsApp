@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "272858179284",
+    "project_id": "artistsapp-f7e3e",
+    "storage_bucket": "artistsapp-f7e3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272858179284:android:f436a78271e2f76b017d41",
+        "android_client_info": {
+          "package_name": "com.example.freelanceapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "272858179284-8kcsifdqrf284grdfpuioja9d1clrlur.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkQrvRuOJ7vGiOGlZpyl1wTKm-X3j9aeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "272858179284-8kcsifdqrf284grdfpuioja9d1clrlur.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
