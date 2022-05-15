@@ -1,16 +1,16 @@
 package com.example.freelanceapp.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.freelanceapp.consumer.MainActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.example.freelanceapp.R;
 import com.example.freelanceapp.Utils;
 import com.example.freelanceapp.artist.ArtistMainActivity;
+import com.example.freelanceapp.consumer.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashActivity extends AppCompatActivity {
@@ -25,30 +25,29 @@ public class SplashActivity extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         long currentMillis = System.currentTimeMillis();
-        long nextDate =1652555565000L;
+        long nextDate = 1653069138000L;
 
 
-
-        if ( nextDate< currentMillis) {
+        if (nextDate < currentMillis) {
             Toast.makeText(this, "Season Expired", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
 
-        if(auth.getCurrentUser()!=null){
+        if (auth.getCurrentUser() != null) {
             try {
                 Utils.IS_ARTIST = Utils.getUserIsArtist(SplashActivity.this);
                 Intent intent;
-                if(Utils.IS_ARTIST){
-                     intent = new Intent(getApplicationContext(), ArtistMainActivity.class);
-                }else {
-                     intent = new Intent(getApplicationContext(), MainActivity.class);
+                if (Utils.IS_ARTIST) {
+                    intent = new Intent(getApplicationContext(), ArtistMainActivity.class);
+                } else {
+                    intent = new Intent(getApplicationContext(), MainActivity.class);
                 }
 
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
 
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

@@ -12,6 +12,8 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        google()
+        mavenCentral()
     }
 }
 rootProject.name = "FreelanceApp"

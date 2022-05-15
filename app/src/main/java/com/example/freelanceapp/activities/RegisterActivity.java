@@ -106,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
                             assert user != null;
                             docData.put("email", user.getEmail());
                             docData.put("ratings", "0");
-                            //docData.put("regions", Arrays.asList("west_coast", "socal"));
+
 
                             int finalIsArtist = isArtist;
                             firestore.collection("users").document(user.getUid()).set(docData).addOnCompleteListener(new OnCompleteListener<Void>() {
