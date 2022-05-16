@@ -15,6 +15,7 @@
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/activity_artist_profile.xml" value="0.25" />
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/activity_chat.xml" value="0.25" />
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/activity_edit_profile.xml" value="0.209375" />
+        <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/activity_image.xml" value="0.1953125" />
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/activity_login.xml" value="0.18" />
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/activity_main.xml" value="0.209375" />
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/activity_profile.xml" value="0.2839285714285714" />
@@ -31,11 +32,12 @@
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/fragment_chats.xml" value="0.209375" />
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/fragment_contacts.xml" value="0.1" />
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/fragment_home.xml" value="0.209375" />
-        <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/fragment_profile.xml" value="0.22" />
+        <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/fragment_profile.xml" value="0.18" />
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/item_message_left.xml" value="0.1" />
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/item_message_right.xml" value="0.1" />
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/lay_item_booking.xml" value="0.209375" />
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/lay_item_search.xml" value="0.209375" />
+        <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/lay_work_item.xml" value="0.209375" />
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/review_item.xml" value="0.209375" />
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/layout/toolbar.xml" value="0.209375" />
         <entry key="..\:/Users/UsaMa/AndroidStudioProjects/FreelanceApp/app/src/main/res/menu/bottom_menu.xml" value="0.209375" />

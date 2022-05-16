@@ -27,7 +27,7 @@ public class ArtistCompleteProfileActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
     FirebaseFirestore firestore;
-    RadioGroup radioGroup;
+    //RadioGroup radioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,8 @@ public class ArtistCompleteProfileActivity extends AppCompatActivity {
         EditText bio = findViewById(R.id.bio);
         EditText hourlyRate = findViewById(R.id.rate);
         EditText accountNo = findViewById(R.id.account);
-        radioGroup = findViewById(R.id.radioGroup);
+        EditText accountNo2 = findViewById(R.id.account2);
+      //  radioGroup = findViewById(R.id.radioGroup);
         firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
@@ -50,7 +51,11 @@ public class ArtistCompleteProfileActivity extends AppCompatActivity {
                     if (!bio.getText().toString().isEmpty()) {
                         if (!hourlyRate.getText().toString().isEmpty()) {
                             if (!accountNo.getText().toString().isEmpty()) {
-                                updateData(exp.getText().toString(), bio.getText().toString(), hourlyRate.getText().toString(), accountNo.getText().toString());
+                                if (!accountNo2.getText().toString().isEmpty()) {
+                                    updateData(exp.getText().toString(), bio.getText().toString(), hourlyRate.getText().toString(), accountNo.getText().toString(),accountNo2.getText().toString());
+                                } else {
+                                    accountNo2.setError("Required");
+                                }
                             } else {
                                 accountNo.setError("Required");
                             }
@@ -67,17 +72,19 @@ public class ArtistCompleteProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void updateData(String exp, String bio, String rate, String accountNo) {
-        int selectedId = radioGroup.getCheckedRadioButtonId();
-        RadioButton radioButton = (RadioButton) findViewById(selectedId);
-        boolean isEasyPaisa = !radioButton.getText().toString().equals("  JazzCash");
-
+    private void updateData(String exp, String bio, String rate, String accountNo,String accountNo2) {
+        /*int selectedId = radioGroup.getCheckedRadioButtonId();
+        RadioButton radioButton = (RadioButton) findViewById(selectedId);*/
+        //boolean isEasyPaisa = !radioButton.getText().toString().equals("  JazzCash");
+        //ACOOUNT 2 FOR JAZZCASH
         Map<String, Object> docData = new HashMap<>();
         docData.put("experience", exp);
         docData.put("bio", bio);
         docData.put("hourly_rate", rate);
         docData.put("account_no", accountNo);
-        docData.put("is_easy_paisa", isEasyPaisa);
+        docData.put("account_no2", accountNo2);
+      //  docData.put("is_easy_paisa", isEasyPaisa);
+        docData.put("is_easy_paisa", true);
         firestore.collection("users").document(Objects.requireNonNull(auth.getCurrentUser()).getUid()).update(docData).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

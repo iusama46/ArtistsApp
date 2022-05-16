@@ -4,18 +4,26 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.freelanceapp.R;
 import com.example.freelanceapp.Utils;
 import com.example.freelanceapp.activities.RegisterActivity;
+import com.example.freelanceapp.artist.adapters.WorkAdapter;
+import com.example.freelanceapp.artist.models.Work;
 import com.example.freelanceapp.chat.ChatActivity;
 import com.example.freelanceapp.consumer.MainActivity;
 import com.example.freelanceapp.consumer.ReviewsActivity;
@@ -26,23 +34,31 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class ArtistProfileActivity extends AppCompatActivity {
 
-    TextView bio, name, area, exp;
+    TextView bio, name, area, exp, accountNo, categoriesTv,accountNo2;
     RatingBar ratingBar;
     String artistId;
-
+    RecyclerView recyclerView;
+    ImageView profileImg;
+    ImageButton payBtn;
+    ArrayList<Work> workImages = new ArrayList<>();
+    WorkAdapter adapter;
     String artistName = "";
+    String epAccountNo="#",jcAccountNo ="#";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +75,42 @@ public class ArtistProfileActivity extends AppCompatActivity {
         area = findViewById(R.id.loc);
         ratingBar = findViewById(R.id.simpleRatingBar);
         exp = findViewById(R.id.exp);
+        profileImg = findViewById(R.id.image_pp);
+
+        recyclerView = findViewById(R.id.sample);
+        GridLayoutManager manager = new GridLayoutManager(this, 3);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setNestedScrollingEnabled(false);
+        categoriesTv = findViewById(R.id.cat);
+        payBtn = findViewById(R.id.pay_img);
+        accountNo = findViewById(R.id.account);
+        accountNo2 = findViewById(R.id.account2);
 
         artistId = getIntent().getStringExtra("uId");
 
+        findViewById(R.id.switch_acc).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(epAccountNo.equals("#") || epAccountNo.isEmpty())
+                    accountNo.setText("Unavailable");
+                else
+                    accountNo.setText(epAccountNo);
+            }
+        });
+
+        findViewById(R.id.switch_acc2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(jcAccountNo.equals("#") || jcAccountNo.isEmpty())
+                    accountNo2.setText("Unavailable");
+                else
+                    accountNo2.setText(jcAccountNo);
+            }
+        });
+
         getData();
+
+
 
         findViewById(R.id.book_service).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,11 +205,56 @@ public class ArtistProfileActivity extends AppCompatActivity {
                     exp.setText(experience + hourlyRate);
                     Float ratings = Float.parseFloat(document.getString("ratings"));
                     ratingBar.setRating(ratings);
+                    if (document.contains("account_no")) {
+                        //accountNo.setText(document.getString("account_no"));
+                        epAccountNo=document.getString("account_no");
+                    }
 
+                    if (document.contains("account_no2")) {
+                        //accountNo.setText(document.getString("account_no"));
+                        jcAccountNo=document.getString("account_no2");
+                    }
 
+                    if (document.contains("categories")) {
+                        List<String> categories = (List<String>) document.get("categories");
+                        String strNew = categories.toString().replace("[", "");
+                        categoriesTv.setText(strNew.replace("]", ""));
+                    }
+
+                    if (document.contains("img_url")) {
+                        Glide
+                                .with(ArtistProfileActivity.this)
+                                .load(document.getString("img_url"))
+                                .centerCrop()
+                                .placeholder(R.drawable.loading)
+                                .into(profileImg);
+                    }
                 }
             }
         });
+
+        try {
+            db.collection("users").document(artistId).collection("portfolio").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                            Log.d("clima2",doc.getString("img_url"));
+
+                            Work work = new Work();
+                            work.setId(doc.getId());
+                            work.setImageUrl(doc.getString("img_url"));
+                            workImages.add(work);
+                        }
+                        adapter = new WorkAdapter(workImages);
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            });
+        } catch (Exception e) {
+
+        }
     }
 
     @Override

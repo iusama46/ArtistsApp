@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FreelanceApp">
         <activity
+            android:name=".activities.ImageActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.SkillSelectionActivity"
             android:exported="false" />
         <activity

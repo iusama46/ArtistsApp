@@ -93,7 +93,7 @@
                     android:id="@+id/checkBox9"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Digital illustrations art" />
+                    android:text="Digital illustrations Art" />
             </LinearLayout>
 
             <Button

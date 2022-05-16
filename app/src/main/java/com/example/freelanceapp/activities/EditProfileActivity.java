@@ -25,7 +25,7 @@ import java.util.Objects;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    EditText bio, name, area, exp, rate;
+    EditText bio, name, area, exp, rate, epAccountNo, jcAccountNo;
 
     boolean isArtist;
     FirebaseFirestore db;
@@ -48,6 +48,8 @@ public class EditProfileActivity extends AppCompatActivity {
         area = findViewById(R.id.area);
         exp = findViewById(R.id.exp);
         rate = findViewById(R.id.rate);
+        epAccountNo = findViewById(R.id.account);
+        jcAccountNo = findViewById(R.id.account2);
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -56,6 +58,8 @@ public class EditProfileActivity extends AppCompatActivity {
             bio.setVisibility(View.GONE);
             exp.setVisibility(View.GONE);
             rate.setVisibility(View.GONE);
+            jcAccountNo.setVisibility(View.GONE);
+            epAccountNo.setVisibility(View.GONE);
         }
 
         findViewById(R.id.update).setOnClickListener(new View.OnClickListener() {
@@ -79,6 +83,8 @@ public class EditProfileActivity extends AppCompatActivity {
             docData.put("experience", exp.getText().toString());
             docData.put("bio", bio.getText().toString());
             docData.put("hourly_rate", rate.getText().toString());
+            docData.put("account_no", epAccountNo.getText().toString());
+            docData.put("account_no2", jcAccountNo.getText().toString());
         }
 
 
@@ -109,6 +115,14 @@ public class EditProfileActivity extends AppCompatActivity {
                         rate.setText(document.getString("hourly_rate"));
 
                         bio.setSelection(bio.getText().toString().length()-1);
+
+                        if(document.contains("account_no")){
+                            epAccountNo.setText(document.getString("account_no"));
+                        }
+
+                        if(document.contains("account_no2")){
+                            jcAccountNo.setText(document.getString("account_no2"));
+                        }
                     }
                 }
             }

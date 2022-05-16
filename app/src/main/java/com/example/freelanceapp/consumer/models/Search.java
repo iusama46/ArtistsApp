@@ -1,5 +1,6 @@
 package com.example.freelanceapp.consumer.models;
 
+import java.util.List;
 import java.util.Locale;
 
 public class Search {
@@ -8,9 +9,20 @@ public class Search {
     String area;
     String experience;
     String hourlyRate;
+    List<String> categories;
+
+
 
 
     public Search() {
+    }
+
+    public List<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
     }
 
     public Search(String id, String name, String area, String experience, String hourlyRate) {

@@ -66,6 +66,26 @@
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             android:scrollbars="vertical" />
+        <EditText
+            android:id="@+id/account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="10dp"
+            android:hint="Enter Easy Paisa Account No"
+            android:inputType="number"
+            />
+
+
+        <EditText
+            android:id="@+id/account2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="10dp"
+            android:hint="Enter JazzCash Account No"
+            android:inputType="number"
+            />
 
 
         <Button

@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +19,7 @@ import com.example.freelanceapp.consumer.adapters.SearchAdapter;
 import com.example.freelanceapp.consumer.models.Search;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,13 +27,19 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class HomeFragment extends Fragment {
 
     private final ArrayList<Search> resultList = new ArrayList<>();
     ArrayList<Search> allSearches = new ArrayList<>();
+    ArrayList<Search> allCatSearches = new ArrayList<>();
     SearchAdapter searchAdapter;
+    ArrayList<String> tabLabels = new ArrayList<>();
+    TabLayout tabLayout;
+    ImageView imageViewNotFound;
+    boolean isAll = true;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
     private SearchView search;
@@ -48,6 +55,8 @@ public class HomeFragment extends Fragment {
             currentUser = FirebaseAuth.getInstance().getCurrentUser();
             search = view.findViewById(R.id.search);
             recyclerView = view.findViewById(R.id.search_result);
+            tabLayout = view.findViewById(R.id.tabLayout);
+            imageViewNotFound = view.findViewById(R.id.image);
 
             LinearLayoutManager manager = new LinearLayoutManager(getContext());
             manager.setOrientation(RecyclerView.VERTICAL);
@@ -61,7 +70,7 @@ public class HomeFragment extends Fragment {
                         handleSearch(query);
 
                     } else if (query.isEmpty() || query.length() == 0) {
-                        loadSuggestionsList(allSearches);
+                        loadSuggestionsList(isAll ? allSearches : allCatSearches);
                     }
                     return true;
                 }
@@ -71,7 +80,7 @@ public class HomeFragment extends Fragment {
                     if (newText.length() > 0) {
                         handleSearch(newText);
                     } else if (newText.isEmpty() || newText.length() == 0) {
-                        loadSuggestionsList(allSearches);
+                        loadSuggestionsList(isAll ? allSearches : allCatSearches);
                     }
                     return true;
                 }
@@ -80,6 +89,7 @@ public class HomeFragment extends Fragment {
 
             db = FirebaseFirestore.getInstance();
 
+            setTabLayout();
             loadSuggestions();
         } catch (Exception e) {
             //utils.toast(getContext(), e.getMessage(), 1);
@@ -90,8 +100,65 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    private void setTabLayout() {
+        tabLabels.add("All");
+        tabLabels.add("Textile Design");
+        tabLabels.add("Interior Design");
+        tabLabels.add("Home Decorates");
+        tabLabels.add("Fashion Design");
+        tabLabels.add("Calligraphy");
+        tabLabels.add("Sketches");
+        tabLabels.add("Painting");
+        tabLabels.add("Editing Photography");
+        tabLabels.add("Crafts");
+        tabLabels.add("Digital illustrations Art");
+
+        tabLayout.setTabMode(TabLayout.MODE_AUTO);
+
+        for (String tab : tabLabels) {
+            tabLayout.addTab(tabLayout.newTab().setText(tab));
+        }
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getText().toString().equals(tabLabels.get(0))) {
+                    isAll = true;
+                    loadSuggestionsList(allSearches);
+                } else {
+                    isAll = false;
+                    allCatSearches.clear();
+                    for (Search search : allSearches) {
+                        if (search.getCategories() != null) {
+                            if (search.getCategories().toString().contains(tab.getText().toString())) {
+                                allCatSearches.add(search);
+                            }
+                        }
+                    }
+                    loadSuggestionsList(allCatSearches);
+                }
+                Log.d("climaa", tab.getText().toString());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
 
     private void loadSuggestionsList(ArrayList<Search> searches) {
+        if(searches.isEmpty()){
+            imageViewNotFound.setVisibility(View.VISIBLE);
+        }else {
+            imageViewNotFound.setVisibility(View.GONE);
+        }
         searchAdapter = new SearchAdapter(searches);
         recyclerView.setAdapter(searchAdapter);
         searchAdapter.notifyDataSetChanged();
@@ -115,6 +182,11 @@ public class HomeFragment extends Fragment {
                                 search.setExperience(document.getString("experience"));
                                 search.setHourlyRate(document.getString("hourly_rate"));
                                 search.setArea(document.getString("area"));
+
+                                if (document.contains("categories")) {
+                                    List<String> categories = (List<String>) document.get("categories");
+                                    search.setCategories(categories);
+                                }
                                 allSearches.add(search);
 
                             } else {
@@ -137,10 +209,9 @@ public class HomeFragment extends Fragment {
         try {
             resultList.clear();
             v = v.toLowerCase(Locale.ROOT);
-            for (Search search : allSearches) {
+            for (Search search : isAll ? allSearches : allCatSearches) {
                 if (search.getName().toLowerCase(Locale.ROOT).contains(v) || search.getArea().toLowerCase(Locale.ROOT).contains(v)) {
                     resultList.add(search);
-
                 }
             }
             loadSuggestionsList(resultList);

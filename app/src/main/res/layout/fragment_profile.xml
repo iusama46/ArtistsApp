@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="2dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="24dp"
             android:layout_marginBottom="30dp"
             android:orientation="horizontal"
             android:weightSum="2">
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/pp"
+                    android:id="@+id/image_pp"
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:background="@color/transparent"
@@ -167,9 +167,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="4dp"
-                android:fontFamily="sans-serif-condensed-medium"
-                android:text="kkkkkkkkkk"
-                android:textSize="16sp" />
+                android:textColor="@color/black"
+
+                android:textSize="17sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -195,6 +195,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:textSize="17sp"
+                android:textColor="@color/black"
                 android:layout_marginBottom="4dp"
                 android:textStyle="italic" />
         </LinearLayout>
@@ -212,7 +214,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Payment Info"
+                android:text="Payment Details"
                 android:textColor="@color/txt"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -236,9 +238,57 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="4dp"
-                    android:text="12345678"
+                    android:text="*******"
                     android:textColor="@color/black"
-                    android:textSize="17sp" />
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:gravity="end"
+                    android:layout_marginStart="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/switch_acc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="(Show)"
+
+                    android:textSize="15sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/jazzcash" />
+
+                <TextView
+                    android:layout_marginStart="12dp"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/account2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="*******"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:gravity="end"
+                    android:layout_marginStart="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/switch_acc2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="(Show)"
+
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -267,7 +317,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="4dp"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/black"/>
             </LinearLayout>
 
 
@@ -290,14 +340,16 @@
                     android:textStyle="bold" />
 
 
-                <TextView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/sample"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="4dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    app:spanCount="3"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    tools:listitem="@layout/lay_work_item"
+                    android:nestedScrollingEnabled="false" />
             </LinearLayout>
 
         </LinearLayout>
