@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,6 +51,7 @@ public class EditProfileActivity extends AppCompatActivity {
         rate = findViewById(R.id.rate);
         epAccountNo = findViewById(R.id.account);
         jcAccountNo = findViewById(R.id.account2);
+        LinearLayout artistLay = findViewById(R.id.lay);
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -59,6 +61,7 @@ public class EditProfileActivity extends AppCompatActivity {
             exp.setVisibility(View.GONE);
             rate.setVisibility(View.GONE);
             jcAccountNo.setVisibility(View.GONE);
+            artistLay.setVisibility(View.GONE);
             epAccountNo.setVisibility(View.GONE);
         }
 
@@ -108,7 +111,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (document.exists()) {
                     name.setText(document.getString("name"));
                     area.setText(document.getString("area"));
-
+                    name.setSelection(name.getText().toString().length()-1);
                     if (isArtist) {
                         bio.setText(document.getString("bio"));
                         exp.setText(document.getString("experience"));

@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,11 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.freelanceapp.R;
 import com.example.freelanceapp.Utils;
-import com.example.freelanceapp.activities.RegisterActivity;
 import com.example.freelanceapp.artist.adapters.WorkAdapter;
 import com.example.freelanceapp.artist.models.Work;
 import com.example.freelanceapp.chat.ChatActivity;
-import com.example.freelanceapp.consumer.MainActivity;
 import com.example.freelanceapp.consumer.ReviewsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,12 +36,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,16 +46,17 @@ import java.util.Objects;
 
 public class ArtistProfileActivity extends AppCompatActivity {
 
-    TextView bio, name, area, exp, accountNo, categoriesTv,accountNo2;
+    TextView bio, name, area, exp, accountNo, categoriesTv, accountNo2;
     RatingBar ratingBar;
     String artistId;
+    boolean isArtist;
     RecyclerView recyclerView;
     ImageView profileImg;
     ImageButton payBtn;
     ArrayList<Work> workImages = new ArrayList<>();
     WorkAdapter adapter;
     String artistName = "";
-    String epAccountNo="#",jcAccountNo ="#";
+    String epAccountNo = "#", jcAccountNo = "#";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +85,12 @@ public class ArtistProfileActivity extends AppCompatActivity {
         accountNo2 = findViewById(R.id.account2);
 
         artistId = getIntent().getStringExtra("uId");
+        isArtist = getIntent().getBooleanExtra("isArtist", true);
 
         findViewById(R.id.switch_acc).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(epAccountNo.equals("#") || epAccountNo.isEmpty())
+                if (epAccountNo.equals("#") || epAccountNo.isEmpty())
                     accountNo.setText("Unavailable");
                 else
                     accountNo.setText(epAccountNo);
@@ -101,7 +100,7 @@ public class ArtistProfileActivity extends AppCompatActivity {
         findViewById(R.id.switch_acc2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(jcAccountNo.equals("#") || jcAccountNo.isEmpty())
+                if (jcAccountNo.equals("#") || jcAccountNo.isEmpty())
                     accountNo2.setText("Unavailable");
                 else
                     accountNo2.setText(jcAccountNo);
@@ -110,16 +109,21 @@ public class ArtistProfileActivity extends AppCompatActivity {
 
         getData();
 
+        Button servicesBtn = findViewById(R.id.book_service);
 
-
-        findViewById(R.id.book_service).setOnClickListener(new View.OnClickListener() {
+        if(!isArtist) {
+            servicesBtn.setVisibility(View.GONE);
+            LinearLayout linearLayout = findViewById(R.id.artLay);
+            linearLayout.setVisibility(View.GONE);
+        }
+        servicesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveBooking();
             }
         });
-
-        findViewById(R.id.message).setOnClickListener(new View.OnClickListener() {
+        Button msgBtn = findViewById(R.id.message);
+        msgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ArtistProfileActivity.this, ChatActivity.class);
@@ -147,7 +151,7 @@ public class ArtistProfileActivity extends AppCompatActivity {
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-                String currentUserName= Utils.getUserName(ArtistProfileActivity.this);
+                String currentUserName = Utils.getUserName(ArtistProfileActivity.this);
 
                 Map<String, Object> docData = new HashMap<>();
                 docData.put("artist", artistId);
@@ -158,11 +162,11 @@ public class ArtistProfileActivity extends AppCompatActivity {
                 firestore.collection("bookings").add(docData).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
-                   if(task.isSuccessful()){
-                       displayDialog();
-                   } else {
-                       Toast.makeText(ArtistProfileActivity.this, "Error " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-                   }
+                        if (task.isSuccessful()) {
+                            displayDialog();
+                        } else {
+                            Toast.makeText(ArtistProfileActivity.this, "Error " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             } else {
@@ -172,7 +176,6 @@ public class ArtistProfileActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
 
     }
@@ -198,28 +201,33 @@ public class ArtistProfileActivity extends AppCompatActivity {
                 if (document.exists()) {
                     name.setText(document.getString("name") + " | " + document.getString("email"));
                     area.setText(document.getString("area"));
-                    bio.setText(document.getString("bio"));
+
                     artistName = document.getString("name");
-                    String experience = "Experience: " + document.getString("experience");
-                    String hourlyRate = "years & \tHourly Rate: " + document.getString("hourly_rate") + "$/hour";
-                    exp.setText(experience + hourlyRate);
-                    Float ratings = Float.parseFloat(document.getString("ratings"));
-                    ratingBar.setRating(ratings);
-                    if (document.contains("account_no")) {
-                        //accountNo.setText(document.getString("account_no"));
-                        epAccountNo=document.getString("account_no");
+
+                    if (isArtist) {
+                        bio.setText(document.getString("bio"));
+                        String experience = "Experience: " + document.getString("experience");
+                        String hourlyRate = "years & \tHourly Rate: " + document.getString("hourly_rate") + "$/hour";
+                        exp.setText(experience + hourlyRate);
+                        Float ratings = Float.parseFloat(document.getString("ratings"));
+                        ratingBar.setRating(ratings);
+                        if (document.contains("account_no")) {
+                            //accountNo.setText(document.getString("account_no"));
+                            epAccountNo = document.getString("account_no");
+                        }
+
+                        if (document.contains("account_no2")) {
+                            //accountNo.setText(document.getString("account_no"));
+                            jcAccountNo = document.getString("account_no2");
+                        }
+
+                        if (document.contains("categories")) {
+                            List<String> categories = (List<String>) document.get("categories");
+                            String strNew = categories.toString().replace("[", "");
+                            categoriesTv.setText(strNew.replace("]", ""));
+                        }
                     }
 
-                    if (document.contains("account_no2")) {
-                        //accountNo.setText(document.getString("account_no"));
-                        jcAccountNo=document.getString("account_no2");
-                    }
-
-                    if (document.contains("categories")) {
-                        List<String> categories = (List<String>) document.get("categories");
-                        String strNew = categories.toString().replace("[", "");
-                        categoriesTv.setText(strNew.replace("]", ""));
-                    }
 
                     if (document.contains("img_url")) {
                         Glide
@@ -239,11 +247,12 @@ public class ArtistProfileActivity extends AppCompatActivity {
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                            Log.d("clima2",doc.getString("img_url"));
+                            Log.d("clima2", doc.getString("img_url"));
 
                             Work work = new Work();
                             work.setId(doc.getId());
                             work.setImageUrl(doc.getString("img_url"));
+                            work.setArtistId(artistId);
                             workImages.add(work);
                         }
                         adapter = new WorkAdapter(workImages);

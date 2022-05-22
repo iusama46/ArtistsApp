@@ -3,6 +3,7 @@ package com.example.freelanceapp.artist.models;
 public class Work {
     String id;
     String imageUrl;
+    String artistId;
 
     public Work(String id, String imageUrl) {
         this.id = id;
@@ -10,6 +11,14 @@ public class Work {
     }
 
     public Work() {
+    }
+
+    public String getArtistId() {
+        return artistId;
+    }
+
+    public void setArtistId(String artistId) {
+        this.artistId = artistId;
     }
 
     public String getId() {

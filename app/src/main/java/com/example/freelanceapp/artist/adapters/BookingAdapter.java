@@ -1,5 +1,7 @@
 package com.example.freelanceapp.artist.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.freelanceapp.R;
+import com.example.freelanceapp.artist.ArtistProfileActivity;
 import com.example.freelanceapp.artist.models.Booking;
 
 import java.util.ArrayList;
@@ -33,9 +36,17 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
     public void onBindViewHolder(@NonNull BookingAdapter.ViewHolder holder, int position) {
         Booking booking = bookings.get(position);
 
-        String txt = booking.getBookedByName().toUpperCase(Locale.ROOT)+" hired you for a job.";
+        String txt = booking.getBookedByName().toUpperCase(Locale.ROOT) + " hired you for a job.";
         holder.text.setText(txt);
         holder.date.setText(booking.getDate());
+        Context context = holder.itemView.getContext();
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity(new Intent(context, ArtistProfileActivity.class).putExtra("uId", booking.getBookedById())
+                        .putExtra("isArtist",false));
+            }
+        });
     }
 
     @Override

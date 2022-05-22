@@ -79,6 +79,7 @@ public class BookingsFragment extends Fragment {
                             Booking booking = new Booking();
                             booking.setDate(document.getString("date"));
                             booking.setBookedByName(document.getString("booked_by_name"));
+                            booking.setBookedById(document.getString("booked_by_id"));
                             bookings.add(booking);
                         }
 

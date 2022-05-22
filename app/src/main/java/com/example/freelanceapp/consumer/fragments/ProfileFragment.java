@@ -259,13 +259,15 @@ public class ProfileFragment extends Fragment {
                 firestore.collection("users").document(auth.getUid()).collection("portfolio").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        Log.d("clima","hello");
+
                         if (value!=null) {
                             workImages.clear();
                             for (DocumentSnapshot doc : value) {
-                                Work work= new Work();
+
+                                Work work = new Work();
                                 work.setId(doc.getId());
                                 work.setImageUrl(doc.getString("img_url"));
+                                work.setArtistId(auth.getUid());
                                 workImages.add(work);
                             }
                             adapter = new WorkAdapter(workImages);

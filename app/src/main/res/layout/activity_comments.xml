@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".consumer.ReviewsActivity">
+    tools:context=".activities.CommentsActivity">
 
 
     <TextView
@@ -13,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="No Reviews"
+        android:text="No Comments"
         android:textSize="22sp"/>
 
     <LinearLayout
@@ -24,16 +25,7 @@
         android:layout_marginTop="12dp"
         android:orientation="vertical">
 
-        <RatingBar
-            android:id="@+id/simpleRatingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:progressTint="@color/yellow_gold"
-            android:rating="5"
-            android:scaleX=".8"
-            android:scaleY=".9"
-            android:stepSize="1" />
+
 
         <EditText
             android:id="@+id/comment"
@@ -58,7 +50,7 @@
             android:layout_marginTop="10dp"
             android:padding="0dp"
             android:layout_marginBottom="20dp"
-            android:text="Submit Review"
+            android:text="Post Comment"
             android:textSize="16sp"
             android:textAllCaps="false" />
     </LinearLayout>
@@ -76,7 +68,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="All Reviews"
+            android:text="All Comments"
             android:textStyle="bold"
             android:textSize="17sp"
             android:textColor="@color/black"/>

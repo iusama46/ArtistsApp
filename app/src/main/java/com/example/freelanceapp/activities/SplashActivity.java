@@ -24,17 +24,6 @@ public class SplashActivity extends AppCompatActivity {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        long currentMillis = System.currentTimeMillis();
-        long nextDate = 1653069138000L;
-
-
-        if (nextDate < currentMillis) {
-            Toast.makeText(this, "Season Expired", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-
-
         if (auth.getCurrentUser() != null) {
             try {
                 Utils.IS_ARTIST = Utils.getUserIsArtist(SplashActivity.this);

@@ -46,11 +46,14 @@ public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.ViewHolder> {
                 .placeholder(R.drawable.loading)
                 .into(holder.imageView);
 
+        Work work = images.get(position);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(), ImageActivity.class)
-                        .putExtra("img_url", images.get(position).getImageUrl().toString()));
+                        .putExtra("img_url", work.getImageUrl().toString())
+                        .putExtra("artist_id",work.getArtistId())
+                        .putExtra("id",work.getId()));
             }
         });
 
